@@ -53,7 +53,16 @@ namespace StickyNotes
             //Messenger.Default.Register<SaveMessage>(this, SaveDataMessage);
             var systemtray = SystemTray.Instance;
             var programData = XMLHelper.DecodeXML<ProgramData>(ConstData.SaveSettingDataName);
-            LanguageManager.ChangeLanguage(programData.Language);
+            if (programData == null)
+            {
+                LanguageManager.ChangeLanguage(Language.English);
+
+            }
+            else
+            {
+                LanguageManager.ChangeLanguage(programData.Language);
+
+            }
 
             if (programData != null)
             {
@@ -64,8 +73,7 @@ namespace StickyNotes
                 ProgramData.Instance.ShowAllHotKey = programData.ShowAllHotKey;
                 ProgramData.Instance.IsAutoCheckUpdate = programData.IsAutoCheckUpdate;
                 ProgramData.Instance.HideWindowData= programData.HideWindowData;
-                ProgramData.Instance.Language= programData.Language;
-                
+                ProgramData.Instance.Language = programData.Language;
                 ThemeAssist.ChangeTheme(programData.CurrentTheme);
                 //有创建过的窗口
                 if (windowsDatas.Count > 0)
