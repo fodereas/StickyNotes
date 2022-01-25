@@ -23,7 +23,7 @@ namespace StickyNotes
         };
         public List<string> Languages { get; set; } = new List<string>()
         {
-            "中文",
+            "Chinese",
             "English",
         };
         public HotKeyModel ShowAllHotKey { get; set; }
@@ -64,6 +64,10 @@ namespace StickyNotes
         {
             int index=Languages.IndexOf(arg.AddedItems[0].ToString());
             LanguageManager.ChangeLanguage((Language)index);
+
+            ProgramData.Instance.Language=(Language)index;
+            var i= ProgramData.Instance.Language;
+            
         }
 
         private void ShowAllTextUsedMethod(string key)
