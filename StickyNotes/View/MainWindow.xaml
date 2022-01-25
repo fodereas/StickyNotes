@@ -240,11 +240,13 @@
         <ScrollViewer
             Name="ViewContent"
             Grid.Row="1"
+            
             Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Hidden">
             <RichTextBox
                 Name="RichTextBox"
+                IsDocumentEnabled="True"
                 Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollViewer}}}"
                 Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                 BorderThickness="0"
@@ -322,13 +324,22 @@
                                 Height="18"
                                 Kind="FormatFontSizeDecrease" />
                         </Button>
-
+                        <Button
+                            Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+                            Command="{Binding CustomCommand}"
+                            CommandParameter="{Binding ElementName=RichTextBox}"
+                            Style="{StaticResource Button_Menu}">
+                            <iconPacks:PackIconModern
+                                Width="14"
+                                Height="14"
+                                Kind="ImageFocus" />
+                        </Button>
                     </StackPanel>
                 </materialDesign:SnackbarMessage.Content>
             </materialDesign:SnackbarMessage>
         </materialDesign:Snackbar>
 
-        <Grid
+        <!--<Grid
             Name="CheckDeleteWindow"
             Grid.Row="0"
             Grid.RowSpan="3"
@@ -389,8 +400,8 @@
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
-            </Grid>
+            </Grid>-->
 
-        </Grid>
+        <!--</Grid>-->
     </Grid>
 </metro:MetroWindow>

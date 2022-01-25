@@ -14,6 +14,9 @@ using StickyNotes.View;
 using StickyNotes.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Diagnostics;
 
 namespace StickyNotes
 {
@@ -65,6 +68,7 @@ namespace StickyNotes
 
         public RelayCommand<WindowsData> CloseWindowButNotDeleteDataCommand { get; private set; }
         public RelayCommand OpenListCommand { get; set; }
+        public RelayCommand<RichTextBox> CustomCommand { get; set; }
         #endregion
 
         #region 快捷键数据
@@ -104,12 +108,39 @@ namespace StickyNotes
             OpenListCommand=new RelayCommand(OpenListMethod);
             CloseWindowButNotDeleteDataCommand = new RelayCommand<WindowsData>(CloseWindowButNotDeleteDataMethod);
             DropDownMenuClickCommand = new RelayCommand<object>(DropDownMenuClickMethod);
+            CustomCommand = new RelayCommand<RichTextBox>(CustomMethod);
             ProgramData = ProgramData.Instance;
 
             Messenger.Default.Register<WindowsData>(this, "DeleteWindow",DeleteWindowActionInListView);
             Messenger.Default.Register<WindowsData>(this, "CloseWindow", CloseWindowButNotDeleteDataMethod);
             Messenger.Default.Register<WindowsData>(this, "OpenNewExistWindow", OpenNewExistWindowMethod);
 
+        }
+
+        private void CustomMethod(RichTextBox obj)
+        {
+            //var selection=obj.Selection;
+            //Brush brush=new SolidColorBrush(Color.FromRgb(200,0,0));
+            //Brush brush2=new SolidColorBrush(Color.FromRgb(0,200,0));
+
+            //TextRange tr = new TextRange(obj.Selection.Start, obj.Selection.End);
+            //Hyperlink hlink = new Hyperlink(tr.Start, tr.End);
+            //hlink.NavigateUri = new Uri("http://www.baidu.com/");
+            //hlink.RequestNavigate += Hlink_RequestNavigate;
+            //Hyperlink link =new Hyperlink();
+            //link.Inlines.Add(selection.Text);
+            //obj.Selection.End;
+            //obj.Document.
+            //obj.Document.Blocks.Add(link);
+            //selection.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+            //selection.ApplyPropertyValue(TextElement.BackgroundProperty, brush2);
+        }
+
+        private void Hlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var sender1=sender as Hyperlink;
+            Process.Start(sender1.NavigateUri.ToString());
+            
         }
 
         private void DropDownMenuClickMethod(object obj)
