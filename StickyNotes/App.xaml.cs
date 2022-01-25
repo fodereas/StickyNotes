@@ -60,7 +60,7 @@ namespace StickyNotes
             }
             else
             {
-                LanguageManager.ChangeLanguage(programData.Language);
+                LanguageManager.ChangeLanguage(Language.Chinese);
 
             }
 
