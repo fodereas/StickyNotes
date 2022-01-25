@@ -61,6 +61,9 @@ namespace StickyNotes
             else
             {
                 LanguageManager.ChangeLanguage(programData.Language);
+                LanguageManager.ChangeLanguage(programData.Language);
+                LanguageManager.ChangeLanguage(programData.Language);
+                LanguageManager.ChangeLanguage(programData.Language);
 
             }
 
