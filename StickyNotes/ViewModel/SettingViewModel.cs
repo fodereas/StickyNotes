@@ -64,7 +64,6 @@ namespace StickyNotes
         {
             int index=Languages.IndexOf(arg.AddedItems[0].ToString());
             LanguageManager.ChangeLanguage((Language)index);
-            ProgramData.Instance.Language = (Language)index;
         }
 
         private void ShowAllTextUsedMethod(string key)
