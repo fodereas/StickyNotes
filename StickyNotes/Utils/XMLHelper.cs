@@ -19,26 +19,19 @@ namespace StickyNotes
         public static bool SaveObjAsXml<T>(T obj, string fileName)
         {
 
-            //var dir = Application.StartupPath;
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try
             {
-                if (File.Exists(dir + "/" + fileName))
-                {
-                    File.Copy(dir + "/" + fileName, dir + "/" + "temp.xml", true);
 
-                }
-                FileStream fs = new FileStream(dir + "/" + fileName, FileMode.Create);
-                XmlSerializer xs = new XmlSerializer(typeof(T));
-                xs.Serialize(fs, obj);
-                fs.Flush();
-                fs.Close();
-                Logger.Log().Debug("保存成功");
-                if (File.Exists(dir + "/" + fileName))
+                using (FileStream fs = new FileStream(dir + "/" + fileName, FileMode.Create, FileAccess.Write, FileShare.None, 1024, FileOptions.WriteThrough))
                 {
-                    File.Delete(dir + "/" + "temp.xml");
+                    fs.Position = 0;
+                    XmlSerializer xs = new XmlSerializer(typeof(T));
+                    xs.Serialize(fs, obj);
+                    fs.Flush();
                 }
                 return true;
+
             }
             catch (Exception e)
             {
@@ -68,9 +61,10 @@ namespace StickyNotes
             {
                 if (File.Exists(fileName) == false)
                     return default(T);
-                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 XmlSerializer xs = new XmlSerializer(typeof(T));
                 T obj = (T)xs.Deserialize(fs);
+                fs.Close();
                 return obj;
             }
             catch (Exception ex)

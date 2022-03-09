@@ -50,6 +50,7 @@ namespace StickyNotes
             /// 将全局异常保存到文件目录下
             Current.DispatcherUnhandledException += App_OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            CheckData();
             //Messenger.Default.Register<SaveMessage>(this, SaveDataMessage);
             var systemtray = SystemTray.Instance;
             var programData = XMLHelper.DecodeXML<ProgramData>(ConstData.SaveSettingDataName);
@@ -98,6 +99,25 @@ namespace StickyNotes
             new Task(CheckUpdate).Start();
 
         }
+        /// <summary>
+        /// 检测数据的完整性，判断是否出现数据丢失
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void CheckData()
+        {
+            var systemtray = SystemTray.Instance;
+            var programData = XMLHelper.DecodeXML<ProgramData>(ConstData.SaveSettingDataName);
+            var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (programData == null)
+            {
+                if(File.Exists(dir+"/"+ConstData.BackUpDataName))
+                {
+                    MessageBox.Show("异常退出，从备份数据恢复");
+                    File.Copy(Path.Combine(dir,ConstData.BackUpDataName),Path.Combine(dir,ConstData.SaveSettingDataName),true);
+                }
+            }
+        }
+
         /// <summary>
         /// 检查程序是否要更新
         /// </summary>
@@ -240,8 +260,7 @@ namespace StickyNotes
                 TimeSpan ts1 = new TimeSpan(newestData.LastWriteTime.Ticks);
                 TimeSpan ts2 = new TimeSpan(backupData.LastWriteTime.Ticks);
                 TimeSpan ts = ts1.Subtract(ts2).Duration();
-                Logger.Log().Info("间隔时间为" + ts.TotalSeconds+"="+ts.Hours + "秒，开始存储备份数据");
-                if (ts.Hours >= 2)
+                if (ts.TotalSeconds >= 60*30)
                 {
                     XMLHelper.SaveObjAsXml(ProgramData.Instance, ConstData.BackUpDataName);
                 }
