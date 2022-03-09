@@ -33,6 +33,7 @@ namespace StickyNotes
                 xs.Serialize(fs, obj);
                 fs.Flush();
                 fs.Close();
+                Logger.Log().Debug("保存成功");
                 if (File.Exists(dir + "/" + fileName))
                 {
                     File.Delete(dir + "/" + "temp.xml");

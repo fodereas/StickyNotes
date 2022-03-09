@@ -195,7 +195,7 @@ namespace StickyNotes
         /// <param name="e"></param>
         protected override void OnExit(ExitEventArgs e)
         {
-            Logger.Log().Info("程序退出");
+            Logger.Log().Info("Application-程序退出");
             XMLHelper.SaveObjAsXml(ProgramData.Instance, ConstData.SaveSettingDataName);
             SystemTray.Instance.DisposeNotifyIcon();
             base.OnExit(e);
@@ -237,9 +237,10 @@ namespace StickyNotes
             {
                 FileInfo newestData = new FileInfo(ConstData.SaveSettingDataName);
                 FileInfo backupData = new FileInfo(ConstData.BackUpDataName);
-                TimeSpan ts1 = new TimeSpan(newestData.CreationTime.Ticks);
-                TimeSpan ts2 = new TimeSpan(backupData.CreationTime.Ticks);
+                TimeSpan ts1 = new TimeSpan(newestData.LastWriteTime.Ticks);
+                TimeSpan ts2 = new TimeSpan(backupData.LastWriteTime.Ticks);
                 TimeSpan ts = ts1.Subtract(ts2).Duration();
+                Logger.Log().Info("间隔时间为" + ts.TotalSeconds+"="+ts.Hours + "秒，开始存储备份数据");
                 if (ts.Hours >= 2)
                 {
                     XMLHelper.SaveObjAsXml(ProgramData.Instance, ConstData.BackUpDataName);
